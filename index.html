@@ -851,13 +851,15 @@
 				drawinglayer = true;
 			},0);
 		}
+	}
+	
+	function layerListUpdate() {
 		lcontext.clearRect(0, 0, lcanvas.width, lcanvas.height);
 		lcontext.fillStyle = "black";
-		//width: 293px; height: 610px;
 		lcontext.font = "15pt Verdana";
 		lcontext.fillText("Layers",110,40);
 		shift = 0;
-		if (layernames.length > 0) {
+		if (layernames.length > 0 && drawinglayer) {
 			gap = 25;
 			for (listDrop = 0; listDrop <= ((layernames.length - 1) * gap); listDrop = listDrop + gap) {
 				lcontext.fillStyle = "black";
@@ -920,7 +922,6 @@
 
 	function getTextNodeAtPosition(root, index){
 		var lastNode = null;
-
 		var treeWalker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT,function next(elem) {
 			if(index > elem.textContent.length){
 				index -= elem.textContent.length;
@@ -942,6 +943,7 @@
 	setInterval(getScale,20);
 	//setInterval(hl,1000);
 	//setInterval(Prism.highlightAll,20);
+	setInterval(layerListUpdate,20);
 	
 	document.getElementById("codearea").addEventListener('input',function () {
 		var restore = saveCaretPosition(this);
