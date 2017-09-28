@@ -429,6 +429,18 @@
 			}
 		}
 	}
+	
+	function toTriplet(hexStr) {
+		if (hexStr.length != 3 && hexStr.length != 4) {
+			if (hexStr.substr(0,1) == "#") {
+				return "#"+hexStr.substr(1,2)+hexStr.substr(3,4)+hexStr.substr(5,6);
+			} else {
+				return "#"+hexStr.substr(0,1)+hexStr.substr(2,3)+hexStr.substr(4,5);
+			}
+		} else {
+			return hexStr;
+		}
+	}
 
 	function getMax(arr) {
 		if (arr.length === 0) {
