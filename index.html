@@ -112,18 +112,32 @@
 			width: 30px;
 			height: 30px;
 		}
+		
+		.layerCanvas {
+			position: fixed;
+			z-index: 9999;
+			width: 100px;
+			height: 100px;
+			border-style: solid; 
+			border-width: 1px; 
+			opacity:0.7;
+			background-color: #ffffff;
+		}
 
 	</style>
   </head>
   <body style="background-color: #fafafa;">
   
 	<span class="toolbar">
-	<img class="ico" src="https://image.flaticon.com/icons/svg/61/61092.svg" onclick="draw()"></a><br><br>
-	<img class="ico" src="https://image.flaticon.com/icons/svg/25/25400.svg" onclick="help()"></a>
+	<img class="ico" src="paint.svg" onclick="draw()"></a><br><br>
+	<img class="ico" src="question.svg" onclick="help()"></a><br><br>
+	<img class="ico" src="layers.svg" onclick="layerList()"></a>
 	</span>
 	
+	<canvas id="layerCanvas" class="layerCanvas"></canvas>
+	
 	<iframe id="drawFrame" class="drawFrame" src="paint.html" scrolling="no"></iframe>
-	<pre readonly id="helpBox" class="drawFrame">
+	<pre readonly id="helpBox" class="drawFrame" style="opacity:0.9;">
 	
 	<h1>&nbsp;Help</h1>
 	
@@ -329,8 +343,9 @@
 	var cy;
 	var globalx;
 	var globaly;
-	var drawing;
-	var helpdrawing;
+	var drawing = false;
+	var helpdrawing = false;
+	var drawinglayer = false;
 	var intervals = [];
 	var userfuncs = [];
 	var done = false;
@@ -644,16 +659,6 @@
 		document.getElementById("y").value = mousePos.y;
 	}, false);
 	
-	//Mouseclick anywhere handler
-	document.body.addEventListener('click', function() {
-		if (drawing == true) {
-			draw();
-		}
-		if (helpdrawing == true) {
-			help();
-		}
-	}, false);
-	
 	
 	//Mouseclick handler
 	canvas.addEventListener('click', function() { //Needs to be able to press "move" button and place layer at different location
@@ -828,8 +833,20 @@
 		globalEval("async function usercode() {"+document.getElementById("codearea").textContent+"}\n usercode();");
 	}
 	
+	function layerList() {
+		if (drawing || drawinglayer || helpdrawing) {
+			$("#layerCanvas").hide();
+			drawinglayer = false;
+		} else {
+			$("#layerCanvas").show();
+			setTimeout(function(){
+				drawinglayer = true;
+			},0);
+		}
+	}
+	
 	function draw() {
-		if (drawing) {
+		if (drawing || drawinglayer || helpdrawing) {
 			$("#drawFrame").hide();
 			drawing = false;
 		} else {
@@ -841,7 +858,7 @@
 	}
 	
 	function help() {
-		if (helpdrawing) {
+		if (drawing || drawinglayer || helpdrawing) {
 			$("#helpBox").hide();
 			helpdrawing = false;
 		} else {
