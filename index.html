@@ -273,7 +273,8 @@
 	
 	
 	<font face='verdana' color='gray'>
-	<button id="execButton" onclick="execbutton();" style="float:right; margin-right:14px;">Exec</button>
+	<button id="clearBoxButton" onclick="clearBox();" style="float:left; margin-left:10px;">Clear</button>
+	<button id="execButton" onclick="execbutton();" style="float:right; margin-right:10px;">Exec</button>
 	</div>
 	
 	
@@ -906,6 +907,10 @@
 	if (sessionStorage.getItem("text") != null) {
 		document.getElementById("codearea").innerHTML = "<code class='language-javascript'>"+sessionStorage.getItem("text");
 		exec();
+	}
+	
+	function clearBox() {
+		sessionStorage.setItem("text",undefined);
 	}
 	
 	//Form submit 
