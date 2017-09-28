@@ -392,33 +392,37 @@
 	
 	async function animate(layer, offset, delay, dimension) {
 		if (dimension == "x" || dimension == "X") {
+			offsetOriginal = xoffset[layer];
 			if (offset > 0) {
 				for (animateIteration = 0; animateIteration <= offset; animateIteration++) {
 					await sleep(delay);
 					xoffset[layer] = xoffset[layer] + 1;
 				}
+				xoffset[layer] = offsetOriginal + offset;
 			} else {
 				offset = -offset>0 ? -offset : offset;
-				alert(offset);
 				for (animateIteration = 0; animateIteration <= offset; animateIteration++) {
 					await sleep(delay);
 					xoffset[layer] = xoffset[layer] - 1;
 				}
+				xoffset[layer] = offsetOriginal - offset;
 			}
 		} else {
 			if (dimension == "y" || dimension == "Y") {
+				offsetOriginal = yoffset[layer];
 				if (offset > 0) {
 					for (animateIteration = 0; animateIteration <= offset; animateIteration++) {
 						await sleep(delay);
 						yoffset[layer] = yoffset[layer] + 1;
 					}
+					yoffset[layer] = offsetOriginal + offset;
 				} else {
 					offset = -offset>0 ? -offset : offset;
-					alert(offset);
 					for (animateIteration = 0; animateIteration <= offset; animateIteration++) {
 						await sleep(delay);
 						yoffset[layer] = yoffset[layer] - 1;
 					}
+					yoffset[layer] = offsetOriginal - offset;
 				}
 			} else {
 				alert("animate(); was used incorrectly. Check the manual for usage");
