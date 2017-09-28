@@ -845,11 +845,13 @@
 		if (drawing || drawinglayer || helpdrawing) {
 			$("#layerCanvas").hide();
 			drawinglayer = false;
+			sessionStorage.setItem("layerList","off");
 		} else {
 			$("#layerCanvas").show();
 			setTimeout(function(){
 				drawinglayer = true;
 			},0);
+			sessionStorage.setItem("layerList","on");
 		}
 	}
 	
@@ -954,6 +956,10 @@
 	if (sessionStorage.getItem("text") != null) {
 		document.getElementById("codearea").innerHTML = "<code class='language-javascript'>"+sessionStorage.getItem("text");
 		exec();
+	}	
+	
+	if (sessionStorage.getItem("layerList") == "on") {
+		layerList();
 	}
 	
 	function clearBox() {
