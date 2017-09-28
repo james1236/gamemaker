@@ -115,11 +115,10 @@
 		
 		.layerCanvas {
 			position: fixed;
+			top: 30px;
+			left: 1000px;
+			float: right;
 			z-index: 9999;
-			width: 100px;
-			height: 100px;
-			border-style: solid; 
-			border-width: 1px; 
 			opacity:0.7;
 			background-color: #ffffff;
 		}
@@ -128,13 +127,13 @@
   </head>
   <body style="background-color: #fafafa;">
   
+  	<canvas id="layerCanvas" class="layerCanvas" width="295px" height="612px"></canvas>
+	
 	<span class="toolbar">
 	<img class="ico" src="paint.svg" onclick="draw()"></a><br><br>
 	<img class="ico" src="question.svg" onclick="help()"></a><br><br>
 	<img class="ico" src="layers.svg" onclick="layerList()"></a>
 	</span>
-	
-	<canvas id="layerCanvas" class="layerCanvas"></canvas>
 	
 	<iframe id="drawFrame" class="drawFrame" src="paint.html" scrolling="no"></iframe>
 	<pre readonly id="helpBox" class="drawFrame" style="opacity:0.9;">
@@ -326,6 +325,8 @@
 
 	var canvas = document.getElementById('myCanvas');
 	var context = canvas.getContext('2d');
+	var lcanvas = document.getElementById('layerCanvas');
+	var lcontext = lcanvas.getContext('2d');
 	var layernames = [];
 	var xoffset = [];
 	var yoffset = [];
@@ -792,6 +793,7 @@
 		xoffset = [];
 		yoffset = [];
 		document.querySelector('.gridBox:checked').value = "on";
+		allowScroll = true;
 	}
 	
 	function load(layernum, schem) {
@@ -848,6 +850,21 @@
 			setTimeout(function(){
 				drawinglayer = true;
 			},0);
+		}
+		lcontext.clearRect(0, 0, lcanvas.width, lcanvas.height);
+		lcontext.fillStyle = "black";
+		//width: 293px; height: 610px;
+		lcontext.font = "15pt Verdana";
+		lcontext.fillText("Layers",110,40);
+		shift = 0;
+		if (layernames.length > 0) {
+			gap = 25;
+			for (listDrop = 0; listDrop <= ((layernames.length - 1) * gap); listDrop = listDrop + gap) {
+				lcontext.fillStyle = "black";
+				lcontext.font = "15pt Verdana";
+				lcontext.fillText(shift + " : " + layernames[shift],25,listDrop+75);
+				shift++;
+			}
 		}
 	}
 	
