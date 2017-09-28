@@ -1,0 +1,926 @@
+<!DOCTYPE HTML>
+<html id="html">
+  <head>
+	<!--<link rel="stylesheet"
+		href="/highlight/styles/sunburst.min.css">
+	<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+	<script>-->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.5.1/prism.min.js"></script>
+	<link href="https://rawgit.com/PrismJS/prism/gh-pages/themes/prism.css" rel="stylesheet"/>
+	<script>
+	/*hljs.initHighlightingOnLoad();
+	function hl() {
+		var sel = saveSelection();
+		var obj = hljs.highlightAuto(document.getElementById("jsc").textContent, ["js","javascript"]);
+		document.getElementById("jsc").innerHTML = "<code id='jsc'>" + obj.value + "</code>";
+		restoreSelection(sel);
+	}
+	*/
+	</script>
+	<style>
+		body {
+			margin: 10px;
+			padding: 0px;
+			user-select: none;
+			-moz-user-select: none;
+		}
+		
+		.gameframe {
+			position: float;
+			float: right;
+			width: 65%;
+		}
+		
+		.codeframe {
+			top: 30px;
+			left: 25px;
+			position: fixed;
+			border-style: solid;
+			border-width: 1px;
+			float: left;
+			height: 92.3%;
+			width: 35%;
+			background-color: #eeeeee;
+		}
+		
+		.codearea, #codearea {
+			margin: 2.2%;
+			width: 90%;
+			height: 86%;
+			font-size: 13px;
+			-moz-tab-size : 4;
+			-o-tab-size : 4;
+			tab-size : 4;
+			overflow: auto;
+			white-space: pre-wrap !important;
+		}
+		
+		.language-javascript {
+			white-space: pre-wrap !important;
+		}
+		
+		.coords {
+			margin-left: -330px; 
+			margin-top: 7px; 
+			position: fixed; 
+			/*border-style: solid; */
+			padding: 2px; 
+			border-color: #aaaaaa; 
+			border-width: 1px;
+			background-color: #ffffff;
+		}
+	  
+		.drawFrame {
+			float: left; 
+			margin-top: 20px; 
+			margin-left: 45px; 
+			border-style: solid; 
+			border-width: 5px; 
+			border-color: #aaaaaa;
+			width: 90%; 
+			height: 90%;
+			z-index: 9999; 
+			background-color: #ffffff; 
+			position: fixed;
+			overflow: auto;
+		}
+		
+		input[type=number]::-webkit-inner-spin-button {
+			opacity: 1
+		}
+		
+		.mono {
+			font-family: monospace;
+		}
+		
+		h3 {
+			text-indent: 10px;
+		}
+		
+		h4 {
+			text-indent: 35px;
+		}
+		
+		.toolbar {
+			position: fixed;
+			right:20px;
+			top:100px;
+			float: right;
+		}
+		
+		.ico {
+			width: 30px;
+			height: 30px;
+		}
+
+	</style>
+  </head>
+  <body style="background-color: #fafafa;">
+  
+	<span class="toolbar">
+	<img class="ico" src="https://image.flaticon.com/icons/svg/61/61092.svg" onclick="draw()"></a><br><br>
+	<img class="ico" src="https://image.flaticon.com/icons/svg/25/25400.svg" onclick="help()"></a>
+	</span>
+	
+	<iframe id="drawFrame" class="drawFrame" src="http://james1236.000webhostapp.com/paint.html" scrolling="no"></iframe>
+	<pre readonly id="helpBox" class="drawFrame">
+	
+	<h1>&nbsp;Help</h1>
+	
+<h2>&nbsp;The Basics</h2>
+<h4>What is this?</h4>
+	This is a game making tool.
+	
+<h4>How do I use it?</h4>
+	You'll first want to click the "Draw Textures" link. Here you can pick a color and begin to start drawing a background. 
+	By clicking on a tile, you will set it to a certian color. You can pick a color using the box in the top right.	
+	
+	The "Rect" button allows you to draw a rectangle if you choose to do so. Once you're done, choose a name for your background 
+	layer (like bg) and press the "Save" button. Copy the text in the box.
+	
+	You have now created a schematic. This is how you will reference your image in the future.
+	
+	Click outside the image editor to get back to the game editor. You can now click inside the "//Write Code Here"
+	box and type the following line:
+	
+	<font face='Courier New' style="font-size: 13px; letter-spacing: 3px; display: inline;" color='gray'>
+		load(0,"&lt;paste&gt;");
+	</font>
+	
+	You will want to replace the word &lt;paste&gt; with the schematic you copied before.
+	
+	The number 0 represents the layer you want to load the schematic into. Since this is your first layer, it will be represented
+	by the number 0.
+	
+	The schematic surrounded by quotes that follows tells the program what image to put on that layer.
+	
+	You can now press the "Exec" button to run your game.
+	
+<h4>Can I see an example game?</h4>
+	Just type the following into the "//Write Code Here" box and press the "Exec" button
+	
+	<font face='Courier New' style="font-size: 13px; letter-spacing: 3px; display: inline;" color='gray'>
+		example();
+	</font>
+	
+	
+	
+	
+<h2>&nbsp;Documentation</h2>
+
+<h3>Running code on keypresses:</h3>
+<font face='Courier New' style="font-size: 13px; letter-spacing: 3px; display: inline;" color='gray'>
+	function key&lt;keynumber&gt;() {}
+</font>
+<h4>Example:</h4>
+<font face='Courier New' style="font-size: 13px; letter-spacing: 3px; display: inline;" color='gray'>
+	function key86() {}
+</font>
+
+<h4>WSAD keynumbers:</h4>
+	W : 87
+	S : 83
+	A : 65
+	D : 68
+
+<h4>A full list of keynumbers is avaliable here:</h4>
+	<a target="_blank" href="https://www.cambiaresearch.com/articles/15/javascript-char-codes-key-codes">https://www.cambiaresearch.com/articles/15/javascript-char-codes-key-codes</a>
+
+<h4>Naming a layer "char" will give it basic wsad movement<h4>
+
+<h3>Layer management:</h3>
+<h4>To load a schematic to a layer do:</h4>
+<font face='Courier New' style="font-size: 13px; letter-spacing: 3px; display: inline;" color='gray'>
+	 load(layer, schematic);
+</font>
+	
+<h4>Where "layer" is the layer number and "schematic" is your layer schematic</h4>
+
+<h4>To move a layer to a relative location do:</h4>
+<font face='Courier New' style="font-size: 13px; letter-spacing: 3px; display: inline;" color='gray'>
+	xoffset[layer] = offset;
+	yoffset[layer] = offset;
+</font>
+
+<h4>Example:</h4>
+<font face='Courier New' style="font-size: 13px; letter-spacing: 3px; display: inline;" color='gray'>
+	xoffset[0] = 1;
+</font>
+
+<h3>General</h3>
+<h4>Reset all:</h4>
+<font face='Courier New' style="font-size: 13px; letter-spacing: 3px; display: inline;" color='gray'>
+	clearr();
+</font>
+
+<h4>Reset all (no animation):</h4>
+<font face='Courier New' style="font-size: 13px; letter-spacing: 3px; display: inline;" color='gray'>
+	clearr(1);
+</font>
+
+<h4>Set scale:</h4>
+<font face='Courier New' style="font-size: 13px; letter-spacing: 3px; display: inline;" color='gray'>
+	setScaleX(scale);
+	setScaleY(scale);
+</font>
+
+<h4>Sleep:</h4>
+<font face='Courier New' style="font-size: 13px; letter-spacing: 3px; display: inline;" color='gray'>
+	await sleep(ms);
+</font>
+
+<h4>Toggle grid:</h4>
+<font face='Courier New' style="font-size: 13px; letter-spacing: 3px; display: inline;" color='gray'>
+	toggleGrid();
+</font>
+
+<h4>Toggle scale change via scroll:</h4>
+<font face='Courier New' style="font-size: 13px; letter-spacing: 3px; display: inline;" color='gray'>
+	toggleScroll();
+</font>
+
+<h4>Set limits for scale scroll distance (default values shown here):</h4>
+<font face='Courier New' style="font-size: 13px; letter-spacing: 3px; display: inline;" color='gray'>
+	limitClose = 82;
+	limitFar = 18;
+</font>
+
+<h3>Running check until condition is met:</h3>
+<font face='Courier New' style="font-size: 13px; letter-spacing: 3px; display: inline;" color='gray'>
+	var interval = setInterval(check, 20);
+	
+	function check() {
+		if (condition == true) {
+			clearInterval(interval);
+			//do output
+		}
+	}
+</font>
+
+<h3>Restart Game</h3>
+<font face='Courier New' style="font-size: 13px; letter-spacing: 3px; display: inline;" color='gray'>
+	execbutton();
+</font>
+
+<h3>Very glitchy not reccomended version or restart game (no page reload)</h3>
+<font face='Courier New' style="font-size: 13px; letter-spacing: 3px; display: inline;" color='gray'>
+	exec();
+</font>
+</pre>
+	<div id="codeframe" class="codeframe">
+	
+	<pre id="codearea" class="codearea" contenteditable="true"><code class='language-javascript'>//Write code here</pre></code>
+	
+	
+	<font face='verdana' color='gray'>
+	<button id="execButton" onclick="execbutton();" style="float:right; margin-right:14px;">Exec</button>
+	</div>
+	
+	
+	
+	
+	<div id="gameframe" class="gameframe">
+	<input type="hidden" id="x" name="x" style="width: 75px;"></input>
+	<input type="hidden" id="y" name="y" style="width: 75px;"></input>
+	&nbsp;&nbsp;&nbsp;<a id="coords" class="coords">Coordinates: 0 , 0</a>
+	<!-- <input type="color" id="color" name="color" style="float:right;margin-right: 50px;"></input> -->
+	<center>
+	</form>
+	<input type="hidden" id="iX" min="" max="" value="48"></input>
+	<input type="hidden" id="iY" min="" max="" value="48"></input>
+	<input type="hidden" id="layer" value="0" style="width: 75px"></input>
+	<input type="hidden" id="loadtext" style="width: 30px"></input>
+	<input style="position:fixed;top:-100px" type="checkbox" id="gridBox" class="gridBox" checked="checked"></input>
+	<!-- <a href="http://james1236.000webhostapp.com/yos/index.html">Multiplayer</a> -->
+	
+	<br><br>
+	
+	<canvas id="myCanvas" width="750px" height="610px" style="margin-top: -37px; border-style: solid; border-width: 1px; background-color: #ffffff"></canvas>
+	<span id="container"></span>
+	
+	</div>
+	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.3/jquery.min.js"></script>
+	<script>
+
+	//Defining Canvas Draw Vars
+
+	var canvas = document.getElementById('myCanvas');
+	var context = canvas.getContext('2d');
+	var layernames = [];
+	var xoffset = [];
+	var yoffset = [];
+	var scaleX;
+	var scaleY;
+	var testscaleX;
+	var testscaleY;
+	var currentXNY;
+	var loadtextval;
+	var limitClose = 82;
+	var limitFar = 18;
+	var seen;
+	var xbank = [[]];
+	var ybank = [[]];
+	var colorbank = [[]];
+	var rectArray = [[]];
+	var gridFlag = true;
+	var corners = 0;
+	var cx;
+	var cy;
+	var globalx;
+	var globaly;
+	var drawing;
+	var helpdrawing;
+	var intervals = [];
+	var userfuncs = [];
+	var done = false;
+	var allowScroll = true;
+	
+	$("#drawFrame").hide();
+	$("#helpBox").hide();
+	
+
+	/* for (i = 0; i < 300; i = i + 10) {
+		setTimeout(function(){
+			xbank[xbank.length] = randInt(25);
+			ybank[ybank.length] = randInt(11);
+			colorbank[colorbank.length] = randHex();
+		},i);
+	}
+	for (i = 300; i < 600; i = i + 10) {
+		setTimeout(function(){
+			xbank.splice(0, 1);
+			ybank.splice(0, 1);
+			colorbank.splice(0, 1);
+		},i);
+	} */
+	
+	document.getElementById("iX").min = limitFar + 1;
+	document.getElementById("iY").min = limitFar + 1;
+	document.getElementById("iX").max = limitClose - 1;
+	document.getElementById("iY").max = limitClose - 1;
+	
+	function randInt(max){
+		return Math.trunc(Math.random() * (max - 0));
+	}
+	
+	function sleep(ms) {
+	  return new Promise(resolve => setTimeout(resolve, ms));
+	}
+
+	function getMax(arr) {
+		if (arr.length === 0) {
+			return -1;
+		}
+
+		var max = arr[0];
+		var maxIndex = 0;
+
+		for (var i = 1; i < arr.length; i++) {
+			if (arr[i] > max) {
+				maxIndex = i;
+				max = arr[i];
+			}
+		}
+
+		return arr[maxIndex];
+	}
+	
+	function getCanvas() {
+		$('#myCanvas').show();
+		$('#container').show();
+		document.getElementById("container").innerHTML = "";
+	}
+	
+	function randHex() {
+		var hex = "#" + String(randInt(9)) + String(randInt(9)) + String(randInt(9)) + String(randInt(9)) + String(randInt(9)) + String(randInt(9));
+		return hex;
+	}
+	
+	function grid() {
+		context.strokeStyle="#ededed";
+		context.beginPath();
+		for (y = 0; y < canvas.height; y = y + scaleY)  {
+			context.moveTo(0,y);
+			context.lineTo(canvas.width,y);
+			context.stroke();
+		}
+		for (x = 0; x < canvas.width; x = x + scaleX)  {
+			context.moveTo(x,0);
+			context.lineTo(x,canvas.height);
+			context.stroke();
+		}
+	}
+	
+	function toggleGrid() {
+		if(document.querySelector('.gridBox:checked').value) {
+			document.querySelector('.gridBox:checked').value = "";
+		} else {
+			document.querySelector('.gridBox:checked').value = "on";
+		}
+	}
+	
+	function toggleScroll() {
+		if(allowScroll) {
+			allowScroll = false;
+		} else {
+			allowScroll = true;
+		}
+	}
+	
+	function getData() {
+		/*var script = document.createElement('script');
+		script.src = "data.js";
+		document.head.appendChild(script);*/
+	}
+
+	
+	function reload () {
+		context.clearRect(0, 0, canvas.width, canvas.height);
+		for (layer = 0; layer < xbank.length; layer++) {
+			for (var i = 0; i < xbank[layer].length; i++) {
+				seen = 0;
+				if (String(xbank[layer][i]).indexOf('-') == -1) {
+					for (var donei = 0; donei < xbank[layer].length; donei++) {
+						if (xbank[layer][i] == xbank[layer][donei]) {
+							if (ybank[layer][i] == ybank[layer][donei]) {
+								seen = seen + 1;
+							}
+						}
+					}
+					
+					if (seen % 2 == 0) {
+						//alert(xbank[i]+ ","+ybank[i]);
+						context.fillStyle = "white";
+						context.fillRect((parseInt(xbank[layer][i]) + xoffset[layer])*scaleX, (parseInt(ybank[layer][i]) + yoffset[layer])*scaleY, scaleX, scaleY);
+					} else {
+						context.fillStyle = colorbank[layer][i];
+						context.fillRect((parseInt(xbank[layer][i]) + xoffset[layer])*scaleX, (parseInt(ybank[layer][i]) + yoffset[layer])*scaleY, scaleX, scaleY);
+						//context.font = "15pt Comic Sans MS";
+						//context.fillText("o",xbank[i]*scale,ybank[i]*scale);
+					}
+				} else {
+					//---Rect Drawing---
+					//rectArray[0] = "0!0?3!4?#f0f0f0"
+					//xbank[xbank.length] = "-0";
+					rectShift = String(xbank[layer][i]).split("-")[1];
+					rect = rectArray[layer][rectShift].split("?");
+					r1x = rect[0].split("!")[0];
+					r1y = rect[0].split("!")[1];
+					r2x = String(parseInt(rect[1].split("!")[0]) - parseInt(r1x)+1);
+					r2y = String(parseInt(rect[1].split("!")[1]) - parseInt(r1y)+1);
+					context.fillStyle = rect[2];
+					context.fillRect((parseInt(r1x)+xoffset[layer])*scaleX, (parseInt(r1y)+yoffset[layer])*scaleY, (parseInt(r2x))*scaleX, (parseInt(r2y))*scaleY);
+					
+				}
+			}
+			//Corner Tooltips
+			
+			if (corners > 0) {
+				if (corners == 2) {
+					//context.fillStyle = "gray";
+					//context.font = "9pt Verdana";
+					//context.fillText("Click to place top-left corner",globalx+10,globaly-5);
+					layer = parseInt(document.getElementById("layer").value);
+					context.fillStyle = "lightpink";
+					x1 = parseInt(document.getElementById("x").value);
+					y1 = parseInt(document.getElementById("y").value);
+					context.fillRect(x1*scaleX,y1*scaleY,(parseInt(getMax(xbank[layer]))+1)*scaleX,(parseInt(getMax(ybank[layer]))+1)*scaleY);
+					context.fillStyle = "lightgreen";
+					context.fillRect((parseInt(document.getElementById("x").value))*scaleX,(parseInt(document.getElementById("y").value))*scaleY,scaleX,scaleY);
+				} /* else {
+					if (cx <= parseInt(document.getElementById("x").value) && cy <= parseInt(document.getElementById("y").value)) {
+						context.fillStyle = "lightpink";
+						context.fillRect(cx*scaleX,cy*scaleY,(parseInt(document.getElementById("x").value)-cx+1)*scaleX,(parseInt(document.getElementById("y").value)-cy+1)*scaleY);
+					}
+					context.fillStyle = "red";
+					context.fillRect(cx*scaleX,cy*scaleY,scaleX,scaleY);
+					//context.fillStyle = "gray";
+					//context.font = "9pt Verdana";
+					//context.fillText("Click to place bottom-right corner",globalx+10,globaly-5);
+					
+				} */
+			}
+			if (gridFlag) {
+				grid();
+			}			
+		} //End layer
+	}
+	
+	function setScaleX(s) {
+		document.getElementById("iX").value = s;
+	}
+	
+	function setScaleY(s) {
+		document.getElementById("iY").value = s;
+	}
+	
+	function getScale() {
+		gridFlag = false;
+		if(document.querySelector('.gridBox:checked').value) {
+			gridFlag = true;
+		}
+		testscaleX = parseInt(document.getElementById("iX").value);
+		testscaleY = parseInt(document.getElementById("iY").value);
+		//$("pre")[0].style.fontSize=String(document.getElementById("sizer").value)+"px";
+		document.onkeydown = function(e) {
+			switch (e.keyCode) {
+			case 37:
+				scaleX = scaleX - 1;
+				document.getElementById("iX").value = String(scaleX);
+				break;
+			case 38:
+				scaleY = scaleY + 1;
+				document.getElementById("iY").value = String(scaleY);
+				break;
+			case 39:
+				scaleX = scaleX + 1;
+				document.getElementById("iX").value = String(scaleX);
+				break;
+			case 40:
+				scaleY = scaleY - 1;
+				document.getElementById("iY").value = String(scaleY);
+				break;
+			case 68: //d
+				for (layer = 0; layer < layernames.length; layer++) {
+					if (layernames[layer] == "char") {
+						xoffset[layer] = xoffset[layer] + 1;
+					}
+				}
+				break;
+			case 83: //s
+				for (layer = 0; layer < layernames.length; layer++) {
+					if (layernames[layer] == "char") {
+						yoffset[layer] = yoffset[layer] + 1;
+					}
+				}
+				break;
+			case 65: //a
+				for (layer = 0; layer < layernames.length; layer++) {
+					if (layernames[layer] == "char") {
+						xoffset[layer] = xoffset[layer] - 1;
+					}
+				}
+				break;
+			case 87: //w
+				for (layer = 0; layer < layernames.length; layer++) {
+					if (layernames[layer] == "char") {
+						yoffset[layer] = yoffset[layer] - 1;
+					}
+				}
+				break;
+			}
+			
+			if (e.keyCode === 9) { // tab key
+				e.preventDefault();  // this will prevent us from tabbing out of the editor
+
+				// now insert four non-breaking spaces for the tab key
+				var editor = document.getElementById("codearea");
+				var doc = editor.ownerDocument.defaultView;
+				var sel = doc.getSelection();
+				var range = sel.getRangeAt(0);
+
+				var tabNode = document.createTextNode("\t");
+				range.insertNode(tabNode);
+
+				range.setStartAfter(tabNode);
+				range.setEndAfter(tabNode); 
+				sel.removeAllRanges();
+				sel.addRange(range);
+			}			
+			
+			if (e.keyCode === 13) { // enter key
+				e.preventDefault();
+				// now insert four non-breaking spaces for the tab key
+				var editor = document.getElementById("codearea");
+				var doc = editor.ownerDocument.defaultView;
+				var sel = doc.getSelection();
+				var range = sel.getRangeAt(0);
+				var tabNode = document.createTextNode("\n\n");
+				range.insertNode(tabNode);
+				
+				range.setStartAfter(tabNode);
+				range.setEndAfter(tabNode); 
+				sel.removeAllRanges();
+				sel.addRange(range);
+			}
+			
+			globalEval("key"+e.keyCode+"();");
+		}
+		if (currentXNY != testscaleX+testscaleY) {
+			if (testscaleX > limitFar && testscaleX < limitClose && testscaleY > limitFar && testscaleY < limitClose) {
+				scaleX = parseInt(document.getElementById("iX").value);
+				scaleY = parseInt(document.getElementById("iY").value);
+			}
+			currentXNY = testscaleX+testscaleY;
+		}
+	}
+	
+
+	//Loop to run through the arrays msgbank,xbank and ybank and draw each 
+	
+	
+	//Coords
+	
+	function getMousePos(canvas, evt) {
+		var rect = canvas.getBoundingClientRect();
+		return {
+		  x: evt.clientX - rect.left,
+		  y: evt.clientY - rect.top
+		};
+	}
+
+	//Mousemove Handler
+	canvas.addEventListener('mousemove', function(evt) {
+		var mousePos = getMousePos(canvas, evt);
+		globalx = mousePos.x;
+		globaly = mousePos.y;
+		mousePos.x = Math.trunc(mousePos.x /scaleX);
+		mousePos.y = Math.trunc(mousePos.y /scaleY);
+		Math.trunc(mousePos.y /scaleY)
+		var message = 'Coordinates: ' + mousePos.x + ' , ' + mousePos.y;
+		document.getElementById("coords").innerHTML = message;
+		document.getElementById("x").value = mousePos.x;
+		document.getElementById("y").value = mousePos.y;
+	}, false);
+	
+	//Mouseclick anywhere handler
+	document.body.addEventListener('click', function() {
+		if (drawing == true) {
+			draw();
+		}
+		if (helpdrawing == true) {
+			help();
+		}
+	}, false);
+	
+	
+	//Mouseclick handler
+	canvas.addEventListener('click', function() { //Needs to be able to press "move" button and place layer at different location
+		if (corners == 0) {
+			// --xbank[xbank.length] = document.getElementById("x").value;
+			// --ybank[ybank.length] = document.getElementById("y").value;
+			// --colorbank[colorbank.length] = document.getElementById("color").value;
+			//mouseMoveAllowed = false;
+			//document.getElementById("form").submit();	
+		} else {
+			if (corners == 2) {
+				// --cx = document.getElementById("x").value;
+				// --cy = document.getElementById("y").value;
+				layer = parseInt(document.getElementById("layer").value);
+				xoffset[layer] = parseInt(document.getElementById("x").value);
+				yoffset[layer] = parseInt(document.getElementById("y").value);
+				corners = 0;
+			} /*else {
+				rectArray[rectArray.length] = 
+				cx+
+				"!"+cy+
+				"?"+document.getElementById("x").value+
+				"!"+document.getElementById("y").value+
+				"?"+document.getElementById("color").value
+				;
+				xbank[xbank.length] = "-"+ String(rectArray.length - 1);
+				ybank[ybank.length] = "0";
+				colorbank[colorbank.length] = "#123456";
+				corners = 0;
+			} */
+		}
+	}, false);
+	
+	//RectDraw
+	
+	
+	//Zoom handler
+	document.getElementById("myCanvas").addEventListener("mousewheel", function() {
+		if (allowScroll) {
+			var e = window.event || e; // old IE support
+			var delta = Math.max(-1, Math.min(1, (e.wheelDelta || -e.detail)));
+			if (delta > 0) {
+				if (scaleX > limitFar || scaleY > limitFar) {
+					scaleX = scaleX - 1;
+					scaleY = scaleY - 1;
+					document.getElementById("iX").value = String(scaleX);
+					document.getElementById("iY").value = String(scaleY);
+				}
+			} else {
+				if (scaleX < limitClose || scaleY < limitClose) {
+					scaleX = scaleX + 1;
+					scaleY = scaleY + 1;
+					document.getElementById("iX").value = String(scaleX);
+					document.getElementById("iY").value = String(scaleY);
+				}
+			}
+		}
+	}, false);
+	
+	//Totally my textarea tab handler...
+	var textareas = document.getElementsByTagName('textarea');
+	var count = textareas.length;
+	for(var i=0;i<count;i++){
+		textareas[i].onkeydown = function(e){
+			if(e.keyCode==9 || e.which==9){
+				e.preventDefault();
+				var s = this.selectionStart;
+				this.value = this.value.substring(0,this.selectionStart) + "\t" + this.value.substring(this.selectionEnd);
+				this.selectionEnd = s+1; 
+			}
+		}
+	}
+		
+	//Global Eval (Code that lets the textarea code run in the global scope)
+	// By Chris West - MIT Licensed
+	globalEval = (function(global, realArray, indirectEval, indirectEvalWorks) {
+	  try {
+		eval('var Array={};');
+		indirectEvalWorks = indirectEval('Array') == realArray;
+	  } catch(err){}
+	   
+	  return indirectEvalWorks
+		? indirectEval
+		: (global.execScript
+			? function(expression) {
+				global.execScript(expression);
+			  }
+			: function(expression) {
+				setTimeout(expression, 0);
+			  }
+		  );
+	})(this, Array, (2,eval));
+	
+	function copyToClipboard(text) {
+	  window.prompt("Copy to clipboard: Ctrl+C, Enter", text);
+	}
+	
+	function movelayer() {
+		corners = 2;
+		layer = parseInt(document.getElementById("layer").value);
+		document.getElementById("x").value = String(xoffset[layer]);
+		document.getElementById("y").value = String(yoffset[layer]);
+	}
+	
+	function save() {
+		var layer = document.getElementById("layer").value;
+		var longString = layer+":["+xbank[layer]+"]:["+ybank[layer]+"]:"+JSON.stringify(colorbank[layer]).split('"').join("")+":"+JSON.stringify(rectArray[layer]).split('"').join("");
+		//copyToClipboard(longString);
+		$('#myCanvas').hide();
+		$('#container').show();
+		$('#container').append('<br><br><br><br><br>Pate this text into the load box to load your schematic:<br><br><textarea id="emailsToCopy">'+longString+'</textarea>');
+		$('#emailsToCopy').select().focus();	
+	}
+	
+	function clearr(noanimate) {
+		var layer = document.getElementById("layer").value;
+		if (! noanimate) {
+			$("#myCanvas").fadeTo(0, 0);
+			$("#myCanvas").fadeTo(1000, 1);
+		}
+		xbank[layer] = [];
+		ybank[layer] = [];
+		colorbank[layer] = [];
+		rectArray[layer] = [];
+		xoffset = [];
+		yoffset = [];
+		document.querySelector('.gridBox:checked').value = "on";
+	}
+	
+	function load(layernum, schem) {
+		if(layernum != null) {  
+			var layer = layernum;
+			loadtextval = schem;
+		} else {
+			var layer = parseInt(document.getElementById("layer").value);
+			loadtextval = document.getElementById("loadtext").value;
+			$("#myCanvas").fadeTo(0, 0);
+			$("#myCanvas").fadeTo(1000, 1);
+		}
+		getCanvas();
+		if (loadtextval != "") {
+			//console.log(loadtextval);
+			//console.log(loadtextval.split(":")[3]);
+			var segments = loadtextval.split(":");
+			xbank[layer] = segments[1].replace("[","").replace("]","").split(",");
+			console.log(xbank[layer]);
+			ybank[layer] = segments[2].replace("[","").replace("]","").split(",");
+			colorbank[layer] = segments[3].replace("[","").replace("]","").replace('""',"").split(",");
+			rectArray[layer] = segments[4].replace("[","").replace("]","").replace('""',"").split(",");
+			layernames[layer] = segments[0];
+			xoffset[xoffset.length] = 0;
+			yoffset[yoffset.length] = 0;
+		}
+	}
+	
+	function execbutton() {
+		sessionStorage.setItem("text",document.getElementById("codearea").textContent);
+		location.reload();
+	}
+	
+	function exec() {
+		//$("#execButton").hide();
+		//codeareaT = document.getElementById("codearea").value;
+		/*while (codeareaT.indexOf("function ") != -1) {
+			userfuncs[userfuncs.length] = codeareaT.substr(codeareaT.indexOf("function "),codeareaT.indexOf("(")).split(" ")[1].split("(").join("").split(")").join("");
+			codeareaT = codeareaT.substr(codeareaT.indexOf("(")+1);
+		}
+		for (i = 0; i < i.length; i++) {
+			globalEval("function "+userfuncs[i]+"() {}");
+		}
+		*/
+		globalEval("async function usercode() {"+document.getElementById("codearea").textContent+"}\n usercode();");
+	}
+	
+	function draw() {
+		if (drawing) {
+			$("#drawFrame").hide();
+			drawing = false;
+		} else {
+			$("#drawFrame").show();
+			setTimeout(function(){
+				drawing = true;
+			},0);
+		}
+	}
+	
+	function help() {
+		if (helpdrawing) {
+			$("#helpBox").hide();
+			helpdrawing = false;
+		} else {
+			$("#helpBox").show();
+			setTimeout(function(){
+				helpdrawing = true;
+			},0);
+		}
+	}
+	
+	function example() {
+		document.getElementById("codearea").innerHTML = '<code class="language-javascript">clearr(1);     //Clears all previous data with no animation\ntoggleScroll(); //Turns off scale change via scroll wheel\ntoggleGrid();  //Turns off the grid\nsetScaleX(36); //Zooms in on the screen more\nsetScaleY(39);\n\n//Loading a cyan rectangle texture in layer 0\nload(0, "subbg:[-0]:[#]:[#]:[0!0?20!14?#80ffff]");\n\n//Loading the hills texture in layer 1\nload(1, "bg:[20,-0,-1,3,4,5,6,7,7,7,8,8,7,6,8,8,9,9,9,10,10,10,11,11,12,13,14,15,15,16,17,17,17,18,17,16,19,20,20,18,19,20,20,19,20,20,2,6,3,11,9,8,9,19,16,15,18,13,19]:[14,#,#,8,8,8,7,7,8,8,8,8,8,8,8,7,6,7,8,7,6,8,7,8,8,8,8,8,7,7,7,8,8,8,8,8,8,7,8,7,7,6,6,6,6,5,11,10,12,13,8,12,8,8,9,12,13,10,8]:[#000000,#,#,#80ff80,#80ff80,#80ff80,#80ff80,#80ff80,#80ff80,#80ff80,#80ff80,#80ff80,#80ff80,#80ff80,#80ff80,#80ff80,#80ff80,#80ff80,#80ff80,#80ff80,#80ff80,#80ff80,#80ff80,#80ff80,#80ff80,#80ff80,#80ff80,#80ff80,#80ff80,#80ff80,#80ff80,#80ff80,#80ff80,#80ff80,#80ff80,#80ff80,#80ff80,#80ff80,#80ff80,#80ff80,#80ff80,#80ff80,#80ff80,#80ff80,#80ff80,#80ff80,#00ff80,#00ff80,#00ff80,#00ff80,#00ff80,#00ff80,#00ff80,#00ff80,#00ff80,#00ff80,#00ff80,#00ff80,#00ff80]:[0!0?20!14?#80ffff,0!9?20!14?#80ff80]");\n\n//Loading the title screen on layer 2\nload(2, "title:[0,0,1,2,2,2,2,2,2,1,3,3,4,4,6,6,6,6,6,6,8,8,9,10,10,11,12,12,10,10,10,10,10,11,9,10,14,14,14,14,14,14,15,16,18,18,18,18,18,19,19,18,19,20,19,20,19,20]:[5,4,4,4,5,6,7,8,9,9,9,4,4,5,4,5,6,7,8,9,5,4,4,4,5,4,4,5,6,7,8,9,9,9,9,9,4,5,6,7,8,9,9,9,4,5,6,7,8,9,9,9,9,9,6,6,4,4]:[#000000,#000000,#000000,#000000,#000000,#000000,#000000,#000000,#000000,#000000,#000000,#000000,#000000,#000000,#000000,#000000,#000000,#000000,#000000,#000000,#000000,#000000,#000000,#000000,#000000,#000000,#000000,#000000,#000000,#000000,#000000,#000000,#000000,#000000,#000000,#000000,#000000,#000000,#000000,#000000,#000000,#000000,#000000,#000000,#000000,#000000,#000000,#000000,#000000,#000000,#000000,#000000,#000000,#000000,#000000,#000000,#000000,#000000]:[]");\n\n//Loads the player texture on layer 3\nload(3, "char:[0]:[0]:[#ff0000]:[]");\n\n//Moving the hills layer to below the screen\nyoffset[1] = 10;\n//Moving the title layer to above the screen\nyoffset[2] = -10;\n//Moving the player layer to above the screen\nxoffset[3] = -10;\n\n//Raises the level of the hills by 1 every 25ms until it\n//reaches y=0\nfor (i = 10; i > 0; i--) {\n	await sleep(25);\n	yoffset[1] = i;\n}\n\n//Waiting 500ms\nawait sleep(500);\n\n//Lowers the level of the title by 1 every 50ms until it\n//reaches y=-1\nfor (i = -10; i <= -1; i++) {\n	await sleep(50);\n	yoffset[2] = i;\n}\n\n//Waiting 500ms\nawait sleep(500)\n\n//Moving the player layer to (10,12)\nxoffset[3] = 10;\nyoffset[3] = 12;\n\n//Runs the start function when the player moves\nintervals[0] = setInterval(passTitle, 20);\n\nfunction passTitle() {\n	if (xoffset[3] != 10 || yoffset[3] != 12) {\n		clearInterval(intervals[0]);\n		start();\n	}\n}\n\n//Moves the title layer offscreen to y=12\nfunction start() {\n	yoffset[2] = 12;\n}\n\n//Checks if the player is standing on a boost pad and runs\n//the dead(); function if they are\nintervals[1] = setInterval(fallCheck, 20);\n\nfunction fallCheck() {\n	if (xoffset[3] == 2 && yoffset[3] == 12) {\n		clearInterval(intervals[1]);\n		dead();\n	}\n	if (xoffset[3] == 3 && yoffset[3] == 13) {\n		clearInterval(intervals[1]);\n		dead();\n	}\n	if (xoffset[3] == 6 && yoffset[3] == 11) {\n		clearInterval(intervals[1]);\n		dead();\n	}\n	if (xoffset[3] == 8 && yoffset[3] == 13) {\n		clearInterval(intervals[1]);\n		dead();\n	}\n	if (xoffset[3] == 9 && yoffset[3] == 9) {\n		clearInterval(intervals[1]);\n		dead();\n	}\n	if (xoffset[3] == 13 && yoffset[3] == 11) {\n		clearInterval(intervals[1]);\n		dead();\n	}\n	if (xoffset[3] == 11 && yoffset[3] == 14) {\n		clearInterval(intervals[1]);\n		dead();\n	}\n	if (xoffset[3] == 15 && yoffset[3] == 13) {\n		clearInterval(intervals[1]);\n		dead();\n	}\n	if (xoffset[3] == 16 && yoffset[3] == 10) {\n		clearInterval(intervals[1]);\n		dead();\n	}\n	if (xoffset[3] == 19 && yoffset[3] == 9) {\n		clearInterval(intervals[1]);\n		dead();\n	}\n}\n\n//Moves the player up every 25 ms until it reaches y=-1\nasync function dead() {\n	for (i = yoffset[3]; i > -2; i--) {\n		await sleep(25);\n		yoffset[3] = i;\n	}\n}';
+		exec();
+	}
+	
+	function saveCaretPosition(context){
+		var selection = window.getSelection();
+		var range = selection.getRangeAt(0);
+		range.setStart(  context, 0 );
+		var len = range.toString().length;
+
+		return function restore(){
+			var pos = getTextNodeAtPosition(context, len);
+			selection.removeAllRanges();
+			var range = new Range();
+			range.setStart(pos.node ,pos.position);
+			selection.addRange(range);
+
+		}
+	}
+
+	function getTextNodeAtPosition(root, index){
+		var lastNode = null;
+
+		var treeWalker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT,function next(elem) {
+			if(index > elem.textContent.length){
+				index -= elem.textContent.length;
+				lastNode = elem;
+				return NodeFilter.FILTER_REJECT
+			}
+			return NodeFilter.FILTER_ACCEPT;
+		});
+		var c = treeWalker.nextNode();
+		return {
+			node: c? c: root,
+			position: c? index:  0
+		};
+	}
+
+	getScale();
+	setInterval(reload, 20);
+	//setInterval(getData,100);
+	setInterval(getScale,20);
+	//setInterval(hl,1000);
+	//setInterval(Prism.highlightAll,20);
+	
+	document.getElementById("codearea").addEventListener('input',function () {
+		var restore = saveCaretPosition(this);
+		Prism.highlightElement(this);
+		restore();
+	})
+	
+	if (sessionStorage.getItem("text") != null) {
+		document.getElementById("codearea").innerHTML = "<code class='language-javascript'>"+sessionStorage.getItem("text");
+		exec();
+	}
+	
+	//Form submit 
+	
+	/*$('#form').submit(function(e){
+		e.preventDefault();
+		$.ajax({
+			url:'savemsg.php',
+			type:'post',
+			data:$('#form').serialize(),
+		});
+	});*/
+
+	</script>
+	</font>
+	</center>
+  </body>
+</html>
