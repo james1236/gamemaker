@@ -122,7 +122,20 @@
 			opacity:0.7;
 			background-color: #ffffff;
 		}
+		
+		#progress {
+		  position: fixed;
+		  bottom: 42px;
+		  left: 100px;
+		  width: 335px;
+		  background-color: #ddd;
+		}
 
+		#bar {
+		  width: 0px;
+		  height: 10px;	
+		  background-color: #4CAF50;
+		}
 	</style>
   </head>
   <body style="background-color: #fafafa;">
@@ -294,6 +307,9 @@
 	<font face='verdana' color='gray'>
 	<button id="clearBoxButton" onclick="clearBox();" style="float:left; margin-left:10px;">Reset</button>
 	<button id="execButton" onclick="execbutton();" style="float:right; margin-right:10px;">Exec</button>
+	<div id="progress">
+	  <div id="bar"></div>
+	</div>
 	</div>
 	
 	
@@ -359,9 +375,11 @@
 	var allowScroll = true;
 	var proceed = true;
 	var allowTutorial = true;
+	var tutorialLength = 12;
 	
 	if (sessionStorage.getItem("place") != null) {
 		var place = parseInt(sessionStorage.getItem("place"));
+		move();
 	} else {
 		var place = 0;
 	}
@@ -972,6 +990,22 @@
 		}
 	}
 	
+	function move() {
+		var elem = document.getElementById("bar");
+		//elem.style.width = (place/tutorialLength)*(100)+"%";
+		if (place != 0 && place != undefined) {
+			elem.style.width = ((place-1)/tutorialLength)*(100)+"%";
+			intervalMove = setInterval(slide, 10);
+			function slide() {
+				if (parseFloat(elem.style.width) >= (place/tutorialLength)*(100)) {
+					clearInterval(intervalMove);
+				} else {
+					elem.style.width = (parseFloat(elem.style.width) + 0.2) + "%";
+				}
+			}
+		}
+	}
+	
 	async function typeMsg(text) {
 		allowTutorial = false;
 		document.getElementById("codearea").innerHTML = '<code class="language-javascript">' + document.getElementById("codearea").textContent + "\n";
@@ -992,6 +1026,7 @@
 	async function tutorial() {
 		if (allowTutorial) {
 			place++;
+			move(place);
 			sessionStorage.setItem("place",""+place+"");
 			switch(place) {
 				case 1:
