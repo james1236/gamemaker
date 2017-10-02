@@ -488,8 +488,20 @@
 		document.getElementById("container").innerHTML = "";
 	}
 	
-	function randHex() {
-		var hex = "#" + String(randInt(9)) + String(randInt(9)) + String(randInt(9)) + String(randInt(9)) + String(randInt(9)) + String(randInt(9));
+	function randHex(type) {
+		lightHex = ["a","b","c","d","e"];
+		darkHex = [0,1,2,3,4,5,6,7,8,9];
+		allHex = [0,1,2,3,4,5,6,7,8,9,"a","b","c","d","e","f"];
+		
+		if (type == undefined || type == 0) {
+			var hex = "#" + lightHex[randInt(lightHex.length)] + lightHex[randInt(lightHex.length)] + lightHex[randInt(lightHex.length)];
+		}
+		if (type == 1) {
+			var hex = "#" + darkHex[randInt(darkHex.length)] + darkHex[randInt(darkHex.length)] + darkHex[randInt(darkHex.length)];
+		}		
+		if (type == 2) {
+			var hex = "#" + allHex[randInt(allHex.length)] + allHex[randInt(allHex.length)] + allHex[randInt(allHex.length)];
+		}
 		return hex;
 	}
 	
@@ -1175,10 +1187,48 @@
 		restore();
 	})
 	
-	if (sessionStorage.getItem("text") != null) {
+	if (sessionStorage.getItem("text") != null && sessionStorage.getItem("text") != undefined && sessionStorage.getItem("text") != "//Write code here") {
 		document.getElementById("codearea").innerHTML = "<code class='language-javascript'>"+sessionStorage.getItem("text");
 		exec();
-	}	
+	} else {
+		loadAnimate();
+	}
+	
+	function loadAnimate() {
+		xbank[0] = [];
+		ybank[0] = [];
+		colorbank[0] = [];
+		rectArray[0] = [];
+		xoffset[0] = 0;
+		yoffset[0] = 0;
+		layernames[0] = "loadAnimate";
+		
+		for (i = 0; i < 300; i = i + 20) {
+			setTimeout(function(){
+				xbank[0][xbank[0].length] = String(randInt(15));
+				ybank[0][ybank[0].length] = String(randInt(12));
+				colorbank[0][colorbank[0].length] = randHex(0);
+			},i);
+		}
+		xx = 0;
+		for (i = 300; i < 600; i = i + 20) {
+			setTimeout(function(){
+				xbank[0].splice(0, 1);
+				ybank[0].splice(0, 1);
+				colorbank[0].splice(0, 1);
+				xx++;
+				if (xx == 15) {
+					xbank = [[]];
+					ybank = [[]];
+					colorbank = [[]];
+					rectArray = [[]];
+					xoffset = [];
+					yoffset = [];
+					layernames = [];
+				}
+			},i);
+		}
+	}
 	
 	if (sessionStorage.getItem("layerList") == "on") {
 		layerList();
@@ -1186,7 +1236,7 @@
 	
 	function clearBox() {
 		if (allowTutorial) {
-			sessionStorage.setItem("text","<code class='language-javascript'>//Write code here");
+			sessionStorage.setItem("text","//Write code here");
 			sessionStorage.setItem("place","0");
 			location.reload();
 		}
