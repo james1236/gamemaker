@@ -379,7 +379,7 @@
 	
 	if (sessionStorage.getItem("place") != null) {
 		var place = parseInt(sessionStorage.getItem("place"));
-		move("noanimate");
+		tutorialBar("noanimate");
 	} else {
 		var place = 0;
 	}	
@@ -412,7 +412,7 @@
 	  return new Promise(resolve => setTimeout(resolve, ms));
 	}
 	
-	async function animate(layer, offset, delay, dimension) {
+	async function move(layer, offset, delay, dimension) {
 		if (delay > 0) {
 			if (dimension == "x" || dimension == "X") {
 				offsetOriginal = xoffset[layer];
@@ -448,7 +448,7 @@
 						yoffset[layer] = offsetOriginal - offset;
 					}
 				} else {
-					alert("animate(); was used incorrectly. Check the manual for usage");
+					alert("move(); was used incorrectly. Check the manual for usage");
 				}
 			}
 		} else {
@@ -468,7 +468,7 @@
 						yoffset[layer] = yoffset[layer] - offset;
 					}
 				} else {
-					alert("animate(); was used incorrectly. Check the manual for usage");
+					alert("move(); was used incorrectly. Check the manual for usage");
 				}
 			}
 		}
@@ -1019,7 +1019,7 @@
 		}
 	}
 	
-	function move(animateoff) {
+	function tutorialBar(animateoff) {
 		var elem = document.getElementById("bar");
 		//elem.style.width = (place/tutorialLength)*(100)+"%";
 		if (place != 0 && place != undefined) {
@@ -1059,7 +1059,7 @@
 	async function tutorial() {
 		if (allowTutorial) {
 			place++;
-			move();
+			tutorialBar();
 			sessionStorage.setItem("place",""+place+"");
 			switch(place) {
 				case 1:
@@ -1158,7 +1158,7 @@
 	}
 	
 	function example2() {
-		document.getElementById("codearea").innerHTML = '<code class="language-javascript">//Setting the scale of the game\nscaleX = 18;\nscaleY = 18;\n\n//Disallowing scale change and turning off grid\ntoggleGrid();\ntoggleScroll();\n\n\n//Defining Schematics\nbg = "bg:[-0]:[0]:[#123456]:[0!0?41!33?#000020]";\ntitle = "title:[42,1,2,3,0,0,4,1,2,3,4,4,3,2,1,0,7,7,7,7,7,7,7,7,7,7,9,7,7,8,10,11,11,11,10,9,8,14,14,14,14,14,14,14,14,15,16,17,17,17,18,18,18,18,18,18,18,18,18,18,17,16,15,22,21,23,21,21,21,21,21,21,21,21,22,22,21,21,22,23,24,24,27,27,27,27,27,27,27,27,27,27,27,28,29,30,28,28,28,29,30,28,29,30,34,33,33,35,36,37,34,35,36,37,37,35,35,36,35,34,33,7,17,21,21,28]:[34,7,7,7,8,9,8,10,11,12,14,13,15,15,15,14,7,8,9,10,11,12,13,14,15,7,7,7,7,7,7,8,9,10,11,11,11,15,13,14,11,12,9,10,8,7,7,8,8,7,8,9,10,10,10,11,12,13,14,15,10,10,10,7,7,7,8,10,9,11,12,13,14,15,15,15,15,7,15,15,15,7,7,8,9,11,11,12,10,11,13,14,15,15,15,15,12,12,11,11,11,7,7,7,7,8,9,7,7,8,10,11,12,13,14,15,15,15,15,15,14,7,8,7,15,12]:[#d5aaff,#d5aaff,#d5aaff,#d5aaff,#d5aaff,#d5aaff,#d5aaff,#d5aaff,#d5aaff,#d5aaff,#d5aaff,#d5aaff,#d5aaff,#d5aaff,#d5aaff,#d5aaff,#d5aaff,#d5aaff,#d5aaff,#d5aaff,#d5aaff,#d5aaff,#d5aaff,#d5aaff,#d5aaff,#d5aaff,#d5aaff,#d5aaff,#d5aaff,#d5aaff,#d5aaff,#d5aaff,#d5aaff,#d5aaff,#d5aaff,#d5aaff,#d5aaff,#d5aaff,#d5aaff,#d5aaff,#d5aaff,#d5aaff,#d5aaff,#d5aaff,#d5aaff,#d5aaff,#d5aaff,#d5aaff,#d5aaff,#d5aaff,#d5aaff,#d5aaff,#d5aaff,#d5aaff,#d5aaff,#d5aaff,#d5aaff,#d5aaff,#d5aaff,#d5aaff,#d5aaff,#d5aaff,#d5aaff,#d5aaff,#d5aaff,#d5aaff,#d5aaff,#d5aaff,#d5aaff,#d5aaff,#d5aaff,#d5aaff,#d5aaff,#d5aaff,#d5aaff,#d5aaff,#d5aaff,#d5aaff,#d5aaff,#d5aaff,#d5aaff,#d5aaff,#d5aaff,#d5aaff,#d5aaff,#d5aaff,#d5aaff,#d5aaff,#d5aaff,#d5aaff,#d5aaff,#d5aaff,#d5aaff,#d5aaff,#d5aaff,#d5aaff,#d5aaff,#d5aaff,#d5aaff,#d5aaff,#d5aaff,#d5aaff,#d5aaff,#d5aaff,#d5aaff,#d5aaff,#d5aaff,#d5aaff,#d5aaff,#d5aaff,#d5aaff,#d5aaff,#d5aaff,#d5aaff,#d5aaff,#d5aaff,#d5aaff,#d5aaff,#d5aaff,#d5aaff,#d5aaff,#120024,#120024,#120024,#120024,#120024]:[]";\n\n\n//Loading schematics\nload(0,bg);\nload(1,title);\n\n\n//Title animation\nxoffset[1] = 2;\nyoffset[1] = -16;\n\nawait sleep(1000);\n\n\n//Animate the title to move down 16 and wait 25ms between each step\nanimate(1,16,25,"y");\nawait sleep(16*25);\n\n//Flash screen\nclearr();\n\n\n//Redo things clearr(); undoes\ntoggleGrid();\ntoggleScroll();\nload(0,bg);\nload(1,title);\nxoffset[1] = 2;\n\nawait sleep(1000);\n\n\n//Loading the player schematic (called char1 to stop movement)\nload(2,"char1:[1,0,0]:[1,0,2]:[#e8e8e8,#e8e8e8,#e8e8e8]:[]");\n\n\n//Positioning player\nxoffset[2] = 19;\nyoffset[2] = 26;\n\nawait sleep(500);\n\n//Loading bullet\nload(3,"bullet:[0]:[0]:[#ff8888]:[]");\n\n//Positioning bullet relative to player\nxoffset[3] = xoffset[2]+1;\nyoffset[3] = yoffset[2]+1;\n\n//On space bar press bullet will fire\nasync function key32() {\n	for (i = 0; i <= 82; i++) {\n		await sleep(1);\n		xoffset[3] = xoffset[3] + 0.5;\n	}\n}\n\nkey32();\n\n//Renaming layer 2 to char (allowing player movement)\nload(2,"char:[1,0,0]:[1,0,2]:[#e8e8e8,#e8e8e8,#e8e8e8]:[]");';
+		document.getElementById("codearea").innerHTML = '<code class="language-javascript">//Setting the scale of the game\nscaleX = 18;\nscaleY = 18;\n\n//Disallowing scale change and turning off grid\ntoggleGrid();\ntoggleScroll();\n\n\n//Defining Schematics\nbg = "bg:[-0]:[0]:[#123456]:[0!0?41!33?#000020]";\ntitle = "title:[42,1,2,3,0,0,4,1,2,3,4,4,3,2,1,0,7,7,7,7,7,7,7,7,7,7,9,7,7,8,10,11,11,11,10,9,8,14,14,14,14,14,14,14,14,15,16,17,17,17,18,18,18,18,18,18,18,18,18,18,17,16,15,22,21,23,21,21,21,21,21,21,21,21,22,22,21,21,22,23,24,24,27,27,27,27,27,27,27,27,27,27,27,28,29,30,28,28,28,29,30,28,29,30,34,33,33,35,36,37,34,35,36,37,37,35,35,36,35,34,33,7,17,21,21,28]:[34,7,7,7,8,9,8,10,11,12,14,13,15,15,15,14,7,8,9,10,11,12,13,14,15,7,7,7,7,7,7,8,9,10,11,11,11,15,13,14,11,12,9,10,8,7,7,8,8,7,8,9,10,10,10,11,12,13,14,15,10,10,10,7,7,7,8,10,9,11,12,13,14,15,15,15,15,7,15,15,15,7,7,8,9,11,11,12,10,11,13,14,15,15,15,15,12,12,11,11,11,7,7,7,7,8,9,7,7,8,10,11,12,13,14,15,15,15,15,15,14,7,8,7,15,12]:[#d5aaff,#d5aaff,#d5aaff,#d5aaff,#d5aaff,#d5aaff,#d5aaff,#d5aaff,#d5aaff,#d5aaff,#d5aaff,#d5aaff,#d5aaff,#d5aaff,#d5aaff,#d5aaff,#d5aaff,#d5aaff,#d5aaff,#d5aaff,#d5aaff,#d5aaff,#d5aaff,#d5aaff,#d5aaff,#d5aaff,#d5aaff,#d5aaff,#d5aaff,#d5aaff,#d5aaff,#d5aaff,#d5aaff,#d5aaff,#d5aaff,#d5aaff,#d5aaff,#d5aaff,#d5aaff,#d5aaff,#d5aaff,#d5aaff,#d5aaff,#d5aaff,#d5aaff,#d5aaff,#d5aaff,#d5aaff,#d5aaff,#d5aaff,#d5aaff,#d5aaff,#d5aaff,#d5aaff,#d5aaff,#d5aaff,#d5aaff,#d5aaff,#d5aaff,#d5aaff,#d5aaff,#d5aaff,#d5aaff,#d5aaff,#d5aaff,#d5aaff,#d5aaff,#d5aaff,#d5aaff,#d5aaff,#d5aaff,#d5aaff,#d5aaff,#d5aaff,#d5aaff,#d5aaff,#d5aaff,#d5aaff,#d5aaff,#d5aaff,#d5aaff,#d5aaff,#d5aaff,#d5aaff,#d5aaff,#d5aaff,#d5aaff,#d5aaff,#d5aaff,#d5aaff,#d5aaff,#d5aaff,#d5aaff,#d5aaff,#d5aaff,#d5aaff,#d5aaff,#d5aaff,#d5aaff,#d5aaff,#d5aaff,#d5aaff,#d5aaff,#d5aaff,#d5aaff,#d5aaff,#d5aaff,#d5aaff,#d5aaff,#d5aaff,#d5aaff,#d5aaff,#d5aaff,#d5aaff,#d5aaff,#d5aaff,#d5aaff,#d5aaff,#d5aaff,#d5aaff,#d5aaff,#120024,#120024,#120024,#120024,#120024]:[]";\n\n\n//Loading schematics\nload(0,bg);\nload(1,title);\n\n\n//Title animation\nxoffset[1] = 2;\nyoffset[1] = -16;\n\nawait sleep(1000);\n\n\n//Animate the title to move down 16 and wait 25ms between each step\nmove(1,16,25,"y");\nawait sleep(16*25);\n\n//Flash screen\nclearr();\n\n\n//Redo things clearr(); undoes\ntoggleGrid();\ntoggleScroll();\nload(0,bg);\nload(1,title);\nxoffset[1] = 2;\n\nawait sleep(1000);\n\n\n//Loading the player schematic (called char1 to stop movement)\nload(2,"char1:[1,0,0]:[1,0,2]:[#e8e8e8,#e8e8e8,#e8e8e8]:[]");\n\n\n//Positioning player\nxoffset[2] = 19;\nyoffset[2] = 26;\n\nawait sleep(500);\n\n//Loading bullet\nload(3,"bullet:[0]:[0]:[#ff8888]:[]");\n\n//Positioning bullet relative to player\nxoffset[3] = xoffset[2]+1;\nyoffset[3] = yoffset[2]+1;\n\n//On space bar press bullet will fire\nasync function key32() {\n	for (i = 0; i <= 82; i++) {\n		await sleep(1);\n		xoffset[3] = xoffset[3] + 0.5;\n	}\n}\n\nkey32();\n\n//Renaming layer 2 to char (allowing player movement)\nload(2,"char:[1,0,0]:[1,0,2]:[#e8e8e8,#e8e8e8,#e8e8e8]:[]");';
 		exec();
 	}
 	
