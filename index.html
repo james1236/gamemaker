@@ -413,41 +413,63 @@
 	}
 	
 	async function animate(layer, offset, delay, dimension) {
-		if (dimension == "x" || dimension == "X") {
-			offsetOriginal = xoffset[layer];
-			if (offset > 0) {
-				for (animateIteration = 0; animateIteration <= offset; animateIteration++) {
-					await sleep(delay);
-					xoffset[layer] = xoffset[layer] + 1;
-				}
-				xoffset[layer] = offsetOriginal + offset;
-			} else {
-				offset = -offset>0 ? -offset : offset;
-				for (animateIteration = 0; animateIteration <= offset; animateIteration++) {
-					await sleep(delay);
-					xoffset[layer] = xoffset[layer] - 1;
-				}
-				xoffset[layer] = offsetOriginal - offset;
-			}
-		} else {
-			if (dimension == "y" || dimension == "Y") {
-				offsetOriginal = yoffset[layer];
+		if (delay > 0) {
+			if (dimension == "x" || dimension == "X") {
+				offsetOriginal = xoffset[layer];
 				if (offset > 0) {
 					for (animateIteration = 0; animateIteration <= offset; animateIteration++) {
 						await sleep(delay);
-						yoffset[layer] = yoffset[layer] + 1;
+						xoffset[layer] = xoffset[layer] + 1;
 					}
-					yoffset[layer] = offsetOriginal + offset;
+					xoffset[layer] = offsetOriginal + offset;
 				} else {
 					offset = -offset>0 ? -offset : offset;
 					for (animateIteration = 0; animateIteration <= offset; animateIteration++) {
 						await sleep(delay);
-						yoffset[layer] = yoffset[layer] - 1;
+						xoffset[layer] = xoffset[layer] - 1;
 					}
-					yoffset[layer] = offsetOriginal - offset;
+					xoffset[layer] = offsetOriginal - offset;
 				}
 			} else {
-				alert("animate(); was used incorrectly. Check the manual for usage");
+				if (dimension == "y" || dimension == "Y") {
+					offsetOriginal = yoffset[layer];
+					if (offset > 0) {
+						for (animateIteration = 0; animateIteration <= offset; animateIteration++) {
+							await sleep(delay);
+							yoffset[layer] = yoffset[layer] + 1;
+						}
+						yoffset[layer] = offsetOriginal + offset;
+					} else {
+						offset = -offset>0 ? -offset : offset;
+						for (animateIteration = 0; animateIteration <= offset; animateIteration++) {
+							await sleep(delay);
+							yoffset[layer] = yoffset[layer] - 1;
+						}
+						yoffset[layer] = offsetOriginal - offset;
+					}
+				} else {
+					alert("animate(); was used incorrectly. Check the manual for usage");
+				}
+			}
+		} else {
+			if (dimension == "x" || dimension == "X") {
+				if (offset > 0) {
+					xoffset[layer] = xoffset[layer] + offset;
+				} else {
+					offset = -offset>0 ? -offset : offset;
+					xoffset[layer] = xoffset[layer] - offset;
+				}
+			} else {
+				if (dimension == "y" || dimension == "Y") {
+					if (offset > 0) {
+						yoffset[layer] = yoffset[layer] + offset;
+					} else {
+						offset = -offset>0 ? -offset : offset;
+						yoffset[layer] = yoffset[layer] - offset;
+					}
+				} else {
+					alert("animate(); was used incorrectly. Check the manual for usage");
+				}
 			}
 		}
 	}
