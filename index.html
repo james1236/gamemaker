@@ -375,7 +375,7 @@
 	var allowScroll = true;
 	var proceed = true;
 	var allowTutorial = true;
-	var tutorialLength = 12;
+	var tutorialLength = 17;
 	
 	if (sessionStorage.getItem("place") != null) {
 		var place = parseInt(sessionStorage.getItem("place"));
@@ -1103,7 +1103,7 @@
 					break;
 				case 5:
 					clearText();
-					typeMsg("//Anything beginning with two slashes is called a comment\n\n//Comments are ignored by the compiler, they don't do anything\n\n//alert('I do not work');\n\n//Press the Exec button and see what dosent happen");
+					typeMsg("//Anything beginning with two slashes or between /*these symbols*/ is called a comment\n\n//Comments are ignored by the compiler, they don't do anything\n\n//alert('I do not work');\n\n//Press the Exec button and see what dosent happen");
 					break;
 				case 6:
 					clearText();
@@ -1129,9 +1129,32 @@
 					break;
 				case 12:
 					typeMsg("\n\n/*Your title text should now be above your background! Press the layers icon on the far right to see what layers are loaded*/");
-					break;w
+					break;
+				case 13:
+				    clearText();
+					typeMsg("/*The format is layernumber:layername. You can also see the 'offsets of layers' using this menu*/");
+					break;
+				case 14:
+					clearText();
+					typeMsg("/*The move(); command allows you to 'offset' a layer. The command format is move(layer, offset, delay, axis);*/");
+					break;
+				case 15:
+					typeMsg("\n\n load(0,'cube:[-0,1,0,2,2,2,1]:[0,1,0,1,2,0,2]:[#,#0f8,#0f8,#0f8,#0f8,#88f,#88f]:[0!0?2!2?#00ffff]');\n\nmove(0,5,500,'x');\n\n/*Click the 'Exec' button to see how the move command works*/");
+					break;				
+				case 16:
+					typeMsg("\n\n/*The first number stated that the layer to move was layer 0, The second number stated that the layer was to move +5 in a direction, The third number stated that the program should wait 500ms between each move, The text stated the axis to move along was X*/");
+					break;				
+				case 17:
+					clearText();
+					typeMsg("/*Load a layer and then move it down 7 tiles\n\nmove(layer,offset,delay,axis);*/");
+					break;
 				default:
-					typeMsg("//Tutorial has stopped working");
+					if (confirm("Restart tutorial?")) {
+						place = 1;
+						tutorial();
+					} else {
+						place = tutorialLength;
+					}
 					break;
 			}
 		}
@@ -1215,7 +1238,7 @@
 	} else {
 		setTimeout(function() {
 			loadAnimate();
-		},1000);
+		},200);
 	}
 	
 	function loadAnimate() {
