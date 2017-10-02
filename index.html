@@ -1213,7 +1213,9 @@
 		document.getElementById("codearea").innerHTML = "<code class='language-javascript'>"+sessionStorage.getItem("text");
 		exec();
 	} else {
-		loadAnimate();
+		setTimeout(function() {
+			loadAnimate();
+		},1000);
 	}
 	
 	function loadAnimate() {
