@@ -130,7 +130,7 @@
   	<canvas id="layerCanvas" class="layerCanvas" width="295px" height="612px"></canvas>
 	
 	<span class="toolbar">
-	<img class="ico" src="question.svg" onclick="help()"></a><br><br>
+	<img class="ico" src="question.svg" onclick="tutorial()"></a><br><br>
 	<img class="ico" src="book.svg" onclick="help()"></a><br><br>
 	<img class="ico" src="paint.svg" onclick="draw()"></a><br><br>
 	<img class="ico" src="layers.svg" onclick="layerList()"></a>
@@ -189,11 +189,11 @@
 
 <h3>Running code on keypresses:</h3>
 <font face='Courier New' style="font-size: 13px; letter-spacing: 3px; display: inline;" color='gray'>
-	function key&lt;keynumber&gt;() {}
+	globalEval("function key&lt;keynumber&gt;() {}");
 </font>
 <h4>Example:</h4>
 <font face='Courier New' style="font-size: 13px; letter-spacing: 3px; display: inline;" color='gray'>
-	function key86() {}
+	globalEval("function key32() {alert('You pressed space!');}");
 </font>
 
 <h4>WSAD keynumbers:</h4>
@@ -292,7 +292,7 @@
 	
 	
 	<font face='verdana' color='gray'>
-	<button id="clearBoxButton" onclick="clearBox();" style="float:left; margin-left:10px;">Clear</button>
+	<button id="clearBoxButton" onclick="clearBox();" style="float:left; margin-left:10px;">Reset</button>
 	<button id="execButton" onclick="execbutton();" style="float:right; margin-right:10px;">Exec</button>
 	</div>
 	
@@ -357,6 +357,14 @@
 	var userfuncs = [];
 	var done = false;
 	var allowScroll = true;
+	var proceed = true;
+	var allowTutorial = true;
+	
+	if (sessionStorage.getItem("place") != null) {
+		var place = parseInt(sessionStorage.getItem("place"));
+	} else {
+		var place = 0;
+	}
 	
 	$("#drawFrame").hide();
 	$("#helpBox").hide();
@@ -599,6 +607,7 @@
 		testscaleY = parseInt(document.getElementById("iY").value);
 		//$("pre")[0].style.fontSize=String(document.getElementById("sizer").value)+"px";
 		document.onkeydown = function(e) {
+
 			switch (e.keyCode) {
 			case 37:
 				scaleX = scaleX - 1;
@@ -681,6 +690,7 @@
 			}
 			
 			globalEval("key"+e.keyCode+"();");
+
 		}
 		if (currentXNY != testscaleX+testscaleY) {
 			if (testscaleX > limitFar && testscaleX < limitClose && testscaleY > limitFar && testscaleY < limitClose) {
@@ -876,8 +886,10 @@
 	}
 	
 	function execbutton() {
-		sessionStorage.setItem("text",document.getElementById("codearea").textContent);
-		location.reload();
+		if (allowTutorial) {
+			sessionStorage.setItem("text",document.getElementById("codearea").textContent);
+			location.reload();
+		}
 	}
 	
 	function exec() {
@@ -960,6 +972,118 @@
 		}
 	}
 	
+	async function typeMsg(text) {
+		allowTutorial = false;
+		document.getElementById("codearea").innerHTML = '<code class="language-javascript">' + document.getElementById("codearea").textContent + "\n";
+		Prism.highlightAll();
+		for (letter = 0; letter < text.length; letter++) {
+			await sleep(Math.floor(Math.random() * 70) + 0);
+			document.getElementById("codearea").innerHTML = '<code class="language-javascript">' + document.getElementById("codearea").textContent + text[letter];
+			Prism.highlightAll();
+		}
+		allowTutorial = true;
+		return false;
+	}
+	
+	function clearText() {
+		document.getElementById("codearea").innerHTML = '<code class="language-javascript">';
+	}
+	
+	async function tutorial() {
+		if (allowTutorial) {
+			place++;
+			sessionStorage.setItem("place",""+place+"");
+			switch(place) {
+				case 1:
+					if (confirm("Start tutorial?")) {
+						clearText();
+						typeMsg("//Welcome to the tutorial! Press the tutorial button again to continue\n\n\n");
+					} else {
+						place = 0;
+					}
+					break;
+				case 2:
+					clearText();
+					typeMsg("//Lets begin! The box I'm typing in at the moment is where you will be writing the code for your game\n\n\nfunction codeExample() {\n 	var example = 'test';\n}\n\n//Press the tutorial button again to continue\n\n\n");
+					break;
+				case 3:
+					clearText();
+					typeMsg("//The grid to the right shows the window your game will be displayed in.\n\n");
+					await sleep(3000);
+					load(0,"bg:[-0]:[0]:[#]:[0!0?16!13?#80ff80]");
+					load(1,"hi:[16,3,3,3,3,3,3,3,3,3,4,5,6,7,7,7,7,7,7,7,7,7,10,11,12,11,11,11,11,11,11,11,11,10,12]:[13,2,3,10,9,8,7,6,5,4,6,6,6,6,5,4,3,2,7,8,9,10,2,2,2,3,4,5,6,7,8,9,10,10,10]:[#bff,#bff,#bff,#bff,#bff,#bff,#bff,#bff,#bff,#bff,#bff,#bff,#bff,#bff,#bff,#bff,#bff,#bff,#bff,#bff,#bff,#bff,#bff,#bff,#bff,#bff,#bff,#bff,#bff,#bff,#bff,#bff,#bff,#bff,#bff]:[]");
+					await sleep(200);
+					load(0,"bg:[-0]:[0]:[#]:[0!0?16!13?#ff80ff]");				
+					await sleep(200);
+					load(0,"bg:[-0]:[0]:[#]:[0!0?16!13?#8080ff]");				
+					await sleep(200);
+					load(0,"bg:[-0]:[0]:[#]:[0!0?16!13?#ff8080]");				
+					await sleep(200);
+					load(0,"bg:[-0]:[0]:[#]:[0!0?16!13?#782412]");
+					await sleep(200);
+					load(0,"bg:[-0]:[0]:[#]:[0!0?16!13?#ff80ff]");				
+					await sleep(200);
+					load(0,"bg:[-0]:[0]:[#]:[0!0?16!13?#8080ff]");				
+					await sleep(200);
+					load(0,"bg:[-0]:[0]:[#]:[0!0?16!13?#ff8080]");		
+					await sleep(200);
+					typeMsg("//Press the button to continue\n\n\n");				
+					break;
+				case 4:
+					clearText();
+					typeMsg('/*The "Exec" button runs any code in the code window*/\r\nalert("I work");\r\n/*Press the Exec button to see what happens*/');
+					break;
+				case 5:
+					clearText();
+					typeMsg("//Anything beginning with two slashes is called a comment\n\n//Comments are ignored by the compiler, they don't do anything\n\n//alert('I do not work');\n\n//Press the Exec button and see what dosent happen");
+					break;
+				case 6:
+					clearText();
+					typeMsg("//It's time to start making a game! By clicking the paint icon, you can begin to draw a background for your game\n\n//You can choose colors in the top right and draw rectangles with the 'Rect' button\n\n//When you're done, give your background the name 'background', press 'Save' and copy the text\n\n//Clicking the icon again closes the window");
+					break;
+				case 7:
+					clearText();
+					typeMsg("/*The text you just copied is called a 'schematic'. It's exactly the same as your image except it's converted into text*/\n\n/*Schematics are how the gamemaker loads, moves and displays the pictures you draw*/\n\n/*To load a schematic, you use code similar to what's below*/\n\nload(0,'name:[-0,1,2,3,0,0,3]:[0,1,2,0,3,0,3]:[#,#88f,#88f,#88f,#88f,#88f,#88f]:[0!0?3!3?#80ff80]');\n\n\n/*Press Exec to see what happens*/");
+					break;
+				case 8:
+					clearText();
+					typeMsg("//While that line of code may look complicated, it is very simple when broken down\n\n//You start off by telling the gamemaker that you're about to load a schematic\n\nload();\n\n//The semicolon at the end is nesicarry, it tells the gamemaker when it's at the end of a line of code\n\nload(0,'schematic');\n\n//Between the brackets, you put the layer you'd like to load the schematic to followed by the schematic text you copied earlier\n\n//Putting this text between 2 quotes ('') tells the gamemaker that it's text\n\n//Layers tell the gamemaker what to put ontop of what, layers start at 0 and increase by 1 each time you want to add something\n\n//Higher layers are shown ontop of lower layers");
+					break;
+				case 9:
+					clearText();
+					typeMsg("/*See if you can load a layer by yourself. Copy this command but replace the word schematic with the text you copied earlier\n\nload(0,'schematic');\n\nWrite your command below this comment and press Exec when you're done*/");
+					break;
+				case 10:
+					typeMsg("/*Did your background show up on the left? If it didn't, press the 'Reset' button and retry the tutorial step by step\n\nNow lets try to load another layer, draw some title text for your game and copy the schematic*/");
+					break;
+				case 11:
+					typeMsg("\n\n/*Load the schematic once again, this time to layer 1\n\n load(1,'schematic');\n*/");
+					break;
+				case 12:
+					typeMsg("\n\n/*Your title text should now be above your background! Press the layers icon on the far right to see what layers are loaded*/");
+					break;w
+				default:
+					typeMsg("//Tutorial has stopped working");
+					break;
+			}
+		}
+	}
+	
+	/* function checkWord () {
+		document.title = String(Math.random()*wordList.length);
+		if (wordCheck == undefined) {
+			wordCheck = setInterval(checkWord,20);
+		} else {
+			if (document.getElementById("codearea").textContent.indexOf(word) != -1) {
+				if (document.getElementById("codearea").textContent[document.getElementById("codearea").textContent.indexOf(word)-1] != "'") {
+					clearInterval(wordCheck);
+					wordCheck = undefined;
+					tutorial()
+				}
+			}
+		}
+	} */
+	
 	function example() {
 		document.getElementById("codearea").innerHTML = '<code class="language-javascript">clearr(1);     //Clears all previous data with no animation\ntoggleScroll(); //Turns off scale change via scroll wheel\ntoggleGrid();  //Turns off the grid\nsetScaleX(36); //Zooms in on the screen more\nsetScaleY(39);\n\n//Loading a cyan rectangle texture in layer 0\nload(0, "subbg:[-0]:[#]:[#]:[0!0?20!14?#80ffff]");\n\n//Loading the hills texture in layer 1\nload(1, "bg:[20,-0,-1,3,4,5,6,7,7,7,8,8,7,6,8,8,9,9,9,10,10,10,11,11,12,13,14,15,15,16,17,17,17,18,17,16,19,20,20,18,19,20,20,19,20,20,2,6,3,11,9,8,9,19,16,15,18,13,19]:[14,#,#,8,8,8,7,7,8,8,8,8,8,8,8,7,6,7,8,7,6,8,7,8,8,8,8,8,7,7,7,8,8,8,8,8,8,7,8,7,7,6,6,6,6,5,11,10,12,13,8,12,8,8,9,12,13,10,8]:[#000000,#,#,#80ff80,#80ff80,#80ff80,#80ff80,#80ff80,#80ff80,#80ff80,#80ff80,#80ff80,#80ff80,#80ff80,#80ff80,#80ff80,#80ff80,#80ff80,#80ff80,#80ff80,#80ff80,#80ff80,#80ff80,#80ff80,#80ff80,#80ff80,#80ff80,#80ff80,#80ff80,#80ff80,#80ff80,#80ff80,#80ff80,#80ff80,#80ff80,#80ff80,#80ff80,#80ff80,#80ff80,#80ff80,#80ff80,#80ff80,#80ff80,#80ff80,#80ff80,#80ff80,#00ff80,#00ff80,#00ff80,#00ff80,#00ff80,#00ff80,#00ff80,#00ff80,#00ff80,#00ff80,#00ff80,#00ff80,#00ff80]:[0!0?20!14?#80ffff,0!9?20!14?#80ff80]");\n\n//Loading the title screen on layer 2\nload(2, "title:[0,0,1,2,2,2,2,2,2,1,3,3,4,4,6,6,6,6,6,6,8,8,9,10,10,11,12,12,10,10,10,10,10,11,9,10,14,14,14,14,14,14,15,16,18,18,18,18,18,19,19,18,19,20,19,20,19,20]:[5,4,4,4,5,6,7,8,9,9,9,4,4,5,4,5,6,7,8,9,5,4,4,4,5,4,4,5,6,7,8,9,9,9,9,9,4,5,6,7,8,9,9,9,4,5,6,7,8,9,9,9,9,9,6,6,4,4]:[#000000,#000000,#000000,#000000,#000000,#000000,#000000,#000000,#000000,#000000,#000000,#000000,#000000,#000000,#000000,#000000,#000000,#000000,#000000,#000000,#000000,#000000,#000000,#000000,#000000,#000000,#000000,#000000,#000000,#000000,#000000,#000000,#000000,#000000,#000000,#000000,#000000,#000000,#000000,#000000,#000000,#000000,#000000,#000000,#000000,#000000,#000000,#000000,#000000,#000000,#000000,#000000,#000000,#000000,#000000,#000000,#000000,#000000]:[]");\n\n//Loads the player texture on layer 3\nload(3, "char:[0]:[0]:[#ff0000]:[]");\n\n//Moving the hills layer to below the screen\nyoffset[1] = 10;\n//Moving the title layer to above the screen\nyoffset[2] = -10;\n//Moving the player layer to above the screen\nxoffset[3] = -10;\n\n//Raises the level of the hills by 1 every 25ms until it\n//reaches y=0\nfor (i = 10; i > 0; i--) {\n	await sleep(25);\n	yoffset[1] = i;\n}\n\n//Waiting 500ms\nawait sleep(500);\n\n//Lowers the level of the title by 1 every 50ms until it\n//reaches y=-1\nfor (i = -10; i <= -1; i++) {\n	await sleep(50);\n	yoffset[2] = i;\n}\n\n//Waiting 500ms\nawait sleep(500)\n\n//Moving the player layer to (10,12)\nxoffset[3] = 10;\nyoffset[3] = 12;\n\n//Runs the start function when the player moves\nintervals[0] = setInterval(passTitle, 20);\n\nfunction passTitle() {\n	if (xoffset[3] != 10 || yoffset[3] != 12) {\n		clearInterval(intervals[0]);\n		start();\n	}\n}\n\n//Moves the title layer offscreen to y=12\nfunction start() {\n	yoffset[2] = 12;\n}\n\n//Checks if the player is standing on a boost pad and runs\n//the dead(); function if they are\nintervals[1] = setInterval(fallCheck, 20);\n\nfunction fallCheck() {\n	if (xoffset[3] == 2 && yoffset[3] == 12) {\n		clearInterval(intervals[1]);\n		dead();\n	}\n	if (xoffset[3] == 3 && yoffset[3] == 13) {\n		clearInterval(intervals[1]);\n		dead();\n	}\n	if (xoffset[3] == 6 && yoffset[3] == 11) {\n		clearInterval(intervals[1]);\n		dead();\n	}\n	if (xoffset[3] == 8 && yoffset[3] == 13) {\n		clearInterval(intervals[1]);\n		dead();\n	}\n	if (xoffset[3] == 9 && yoffset[3] == 9) {\n		clearInterval(intervals[1]);\n		dead();\n	}\n	if (xoffset[3] == 13 && yoffset[3] == 11) {\n		clearInterval(intervals[1]);\n		dead();\n	}\n	if (xoffset[3] == 11 && yoffset[3] == 14) {\n		clearInterval(intervals[1]);\n		dead();\n	}\n	if (xoffset[3] == 15 && yoffset[3] == 13) {\n		clearInterval(intervals[1]);\n		dead();\n	}\n	if (xoffset[3] == 16 && yoffset[3] == 10) {\n		clearInterval(intervals[1]);\n		dead();\n	}\n	if (xoffset[3] == 19 && yoffset[3] == 9) {\n		clearInterval(intervals[1]);\n		dead();\n	}\n}\n\n//Moves the player up every 25 ms until it reaches y=-1\nasync function dead() {\n	for (i = yoffset[3]; i > -2; i--) {\n		await sleep(25);\n		yoffset[3] = i;\n	}\n}';
 		exec();
@@ -1027,9 +1151,13 @@
 	}
 	
 	function clearBox() {
-		sessionStorage.setItem("text","<code class='language-javascript'>//Write code here");
-		location.reload();
+		if (allowTutorial) {
+			sessionStorage.setItem("text","<code class='language-javascript'>//Write code here");
+			sessionStorage.setItem("place","0");
+			location.reload();
+		}
 	}
+	
 	
 	//Form submit 
 	
