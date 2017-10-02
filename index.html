@@ -379,7 +379,7 @@
 	
 	if (sessionStorage.getItem("place") != null) {
 		var place = parseInt(sessionStorage.getItem("place"));
-		move();
+		move("noanimate");
 	} else {
 		var place = 0;
 	}
@@ -990,17 +990,21 @@
 		}
 	}
 	
-	function move() {
+	function move(animateoff) {
 		var elem = document.getElementById("bar");
 		//elem.style.width = (place/tutorialLength)*(100)+"%";
 		if (place != 0 && place != undefined) {
 			elem.style.width = ((place-1)/tutorialLength)*(100)+"%";
-			intervalMove = setInterval(slide, 10);
-			function slide() {
-				if (parseFloat(elem.style.width) >= (place/tutorialLength)*(100)) {
-					clearInterval(intervalMove);
-				} else {
-					elem.style.width = (parseFloat(elem.style.width) + 0.2) + "%";
+			if (animateoff != undefined) {
+				elem.style.width = (place/tutorialLength)*(100) + "%";
+			} else {
+				intervalMove = setInterval(slide, 10);
+				function slide() {
+					if (parseFloat(elem.style.width) >= (place/tutorialLength)*(100)) {
+						clearInterval(intervalMove);
+					} else {
+						elem.style.width = (parseFloat(elem.style.width) + 0.2) + "%";
+					}
 				}
 			}
 		}
@@ -1026,7 +1030,7 @@
 	async function tutorial() {
 		if (allowTutorial) {
 			place++;
-			move(place);
+			move();
 			sessionStorage.setItem("place",""+place+"");
 			switch(place) {
 				case 1:
