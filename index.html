@@ -140,7 +140,7 @@
   </head>
   <body style="background-color: #fafafa;">
   
-  	<canvas id="layerCanvas" class="layerCanvas" width="295px" height="612px"></canvas>
+  	<canvas id="layerCanvas" class="layerCanvas" width="295px" height="612px" style="display: none;"></canvas>
 	
 	<span class="toolbar">
 	<img class="ico" src="question.svg" onclick="tutorial()"></a><br><br>
@@ -149,8 +149,8 @@
 	<img class="ico" src="layers.svg" onclick="layerList()"></a>
 	</span>
 	
-	<iframe id="drawFrame" class="drawFrame" src="paint.html" scrolling="no"></iframe>
-	<pre readonly id="helpBox" class="drawFrame" style="opacity:0.9;">
+	<iframe id="drawFrame" class="drawFrame" src="paint.html" scrolling="no" style="display: none;"></iframe>
+	<pre readonly id="helpBox" class="drawFrame" style="opacity:0.9; display: none;">
 	
 	<h1>&nbsp;Help</h1>
 	
@@ -382,12 +382,7 @@
 		move("noanimate");
 	} else {
 		var place = 0;
-	}
-	
-	$("#drawFrame").hide();
-	$("#helpBox").hide();
-	$("#layerCanvas").hide();
-	
+	}	
 
 	/* for (i = 0; i < 300; i = i + 10) {
 		setTimeout(function(){
